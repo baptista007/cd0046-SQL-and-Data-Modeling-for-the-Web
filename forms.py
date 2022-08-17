@@ -2,13 +2,13 @@ from datetime import datetime
 from flask_wtf import Form
 from wtforms import StringField, SelectField, SelectMultipleField, DateTimeField, BooleanField
 from wtforms.validators import DataRequired, AnyOf, URL
-
+from app import db, Artist, Venue, Show
 class ShowForm(Form):
-    artist_id = StringField(
-        'artist_id'
+    artist_id = SelectField(
+        'artist_id', coerce=int, validators=[DataRequired()]
     )
-    venue_id = StringField(
-        'venue_id'
+    venue_id = SelectField(
+        'venue_id', coerce=int, validators=[DataRequired()]
     )
     start_time = DateTimeField(
         'start_time',
@@ -110,6 +110,7 @@ class VenueForm(Form):
             ('Reggae', 'Reggae'),
             ('Rock n Roll', 'Rock n Roll'),
             ('Soul', 'Soul'),
+            ('Swing', 'Swing'),
             ('Other', 'Other'),
         ]
     )
@@ -127,7 +128,9 @@ class VenueForm(Form):
     )
 
 
-
+    # def validate_name(self, field):
+    #     if Venue.query.filter_by(name=field.data).first():
+    #         raise ValidationError('This venue name is already in use.')
 class ArtistForm(Form):
     name = StringField(
         'name', validators=[DataRequired()]
@@ -236,4 +239,7 @@ class ArtistForm(Form):
     seeking_description = StringField(
             'seeking_description'
      )
+    # def validate_name(self, field):
+    #     if Artist.query.filter_by(name=field.data).first():
+    #         raise ValidationError('This artist name is already in use.')
 
